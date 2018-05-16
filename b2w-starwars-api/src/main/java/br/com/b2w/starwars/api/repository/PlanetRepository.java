@@ -1,11 +1,11 @@
 package br.com.b2w.starwars.api.repository;
 
-import java.io.Serializable;
-
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import br.com.b2w.starwars.api.model.Planet;
+import br.com.b2w.starwars.api.domain.Planet;
 
-public interface PlanetRepository extends MongoRepository<Planet, Serializable> {
+public interface PlanetRepository extends MongoRepository<Planet, String> {
+
+	Planet findByName(String name);
 
 }
