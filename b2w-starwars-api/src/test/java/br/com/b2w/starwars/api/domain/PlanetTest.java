@@ -19,9 +19,9 @@ import br.com.b2w.starwars.api.repository.PlanetRepository;
 public class PlanetTest {
 	
 	@Autowired
-	PlanetRepository planetRepo;
-	
-	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+	private PlanetRepository planetRepo;
+
+	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Test
 	public void shouldCreateNewPlanet() throws ParseException {
@@ -39,8 +39,8 @@ public class PlanetTest {
 							"https://swapi.co/api/films/3/");
 		
 		Planet planet = Planet.of("Tatooine",
-								Climate.init("arid"),
-								Terrain.init("desert"),
+								Climate.init().addTemperature("arid"),
+								Terrain.init().addVegetation("desert"),
 								Sets.newSet(film1, film2));
 		
 		planetRepo.save(planet);
@@ -54,28 +54,18 @@ public class PlanetTest {
 	}
 	
 	@Test(expected = NullPointerException.class)
-	public void shouldIssueErrorForNullClimate() throws ParseException {
-		Climate.init(null);
-	}
-	
-	@Test(expected = NullPointerException.class)
-	public void shouldIssueErrorForNullTerrain() throws ParseException {
-		Terrain.init(null);
-	}
-	
-	@Test(expected = NullPointerException.class)
 	public void shouldIssueErrorForPlanetNullName() throws ParseException {
-		Planet.of(null, Climate.init("arid"), Terrain.init("desert"));
+		Planet.of(null, Climate.init(), Terrain.init());
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void shouldIssueErrorForPlanetNullClimate() throws ParseException {
-		Planet.of("Tatooine", null, Terrain.init("desert"));
+		Planet.of("Tatooine", null, Terrain.init());
 	}
 	
 	@Test(expected = NullPointerException.class)
 	public void shouldIssueErrorForPlanetNullTerrain() throws ParseException {
-		Planet.of("Tatooine", Climate.init("arid"), null);
+		Planet.of("Tatooine", Climate.init(), null);
 	}
 		
 

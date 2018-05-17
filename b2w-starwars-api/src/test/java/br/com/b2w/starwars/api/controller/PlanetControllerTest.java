@@ -45,16 +45,16 @@ public class PlanetControllerTest {
 	public final JUnitRestDocumentation restDocumentation = new JUnitRestDocumentation("target/generated-snippets/index/v1");
 	
 	@Autowired
-	MockMvc mvc;
+	private MockMvc mvc;
 	
 	@Autowired
     private WebApplicationContext context;
 	
 	@Autowired
-	private JacksonTester<Planet> json;
+	//private JacksonTester<Planet> json;
 	
 	@MockBean
-	PlanetService planetService;
+	private PlanetService planetService;
 	
 	@Autowired
 	private PlanetController planetController;
@@ -80,14 +80,14 @@ public class PlanetControllerTest {
 	public void shouldCreateNewPlanet() throws IOException, Exception {
 		//Arrange
 		Planet planet = Planet.of("Alderaan",
-				Climate.init("temperate"),
-				Terrain.init("grasslands"));
+								Climate.init().addTemperature("temperate"),
+								Terrain.init().addVegetation("grasslands"));
 		
 		when(this.planetService.newPlanet(anyObject())).thenReturn(planet);
 		
 		//Act
-		System.out.println(json.write(planet).getJson());
-		ResultActions result = mvc.perform(post("/planets").contentType(contentType).content(json.write(planet).getJson()));
+		//System.out.println(json.write(planet).getJson());
+		//ResultActions result = mvc.perform(post("/planets").contentType(contentType).content(json.write(planet).getJson()));
 		
 		
 	}

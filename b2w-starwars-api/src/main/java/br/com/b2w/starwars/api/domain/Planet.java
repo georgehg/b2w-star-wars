@@ -2,8 +2,10 @@ package br.com.b2w.starwars.api.domain;
 
 import java.util.Set;
 
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 
+@ToString
 public class Planet {
 	
 	@Id

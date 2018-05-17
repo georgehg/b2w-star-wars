@@ -1,9 +1,12 @@
 package br.com.b2w.starwars.api.domain;
 
+import lombok.ToString;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+@ToString
 public class Terrain {
 	
 	private final Set<String> vegetations;
@@ -12,21 +15,20 @@ public class Terrain {
 		this.vegetations = new HashSet<String>();
 	}
 	
-	public static Terrain init(String vegetation) {
-		if (vegetation == null) {
-			throw new NullPointerException("Vegetation can not be null");
-		}
-		Terrain terrain = new Terrain();
-		terrain.addVegetation(vegetation);
-		return terrain;
+	public static Terrain init() {
+		return new Terrain();
 	}
 	
 	public Set<String> getVegetations() {
 		return Collections.unmodifiableSet(vegetations);
 	}
 	
-	public Boolean addVegetation(String vegetation) {
-		return this.vegetations.add(vegetation);
+	public Terrain addVegetation(String vegetation) {
+		if (vegetation == null) {
+			throw new NullPointerException("Vegetation can not be null");
+		}
+		this.vegetations.add(vegetation);
+		return this;
 	}
 	
 	public Boolean addAllVegetation(Set<String> vegetation) {

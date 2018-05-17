@@ -1,9 +1,12 @@
 package br.com.b2w.starwars.api.domain;
 
+import lombok.ToString;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+@ToString
 public class Climate {
 	
 	private final Set<String> temperatures;
@@ -12,21 +15,20 @@ public class Climate {
 		this.temperatures = new HashSet<String>();
 	}
 	
-	public static Climate init(String temperature) {
-		if (temperature == null) {
-			throw new NullPointerException("Temperature can not be null");
-		}
-		Climate climate = new Climate();
-		climate.addTemperature(temperature);
-		return climate;
+	public static Climate init() {
+		return new Climate();
 	}
 	
 	public Set<String> getTemperatures() {
 		return Collections.unmodifiableSet(temperatures);
 	}
 	
-	public Boolean addTemperature(String temperature) {
-		return this.temperatures.add(temperature);
+	public Climate addTemperature(String temperature) {
+		if (temperature == null) {
+			throw new NullPointerException("Temperature can not be null");
+		}
+		this.temperatures.add(temperature);
+		return this;
 	}
 	
 	public Boolean addAllTemperature(Set<String> temperature) {

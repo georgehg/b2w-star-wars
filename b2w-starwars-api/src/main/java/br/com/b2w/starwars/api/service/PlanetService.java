@@ -4,7 +4,9 @@ import java.util.List;
 
 import br.com.b2w.starwars.api.domain.Planet;
 import br.com.b2w.starwars.api.repository.PlanetRepository;
+import org.springframework.stereotype.Service;
 
+@Service
 public class PlanetService {
 	
 	private final PlanetRepository planetRepo;

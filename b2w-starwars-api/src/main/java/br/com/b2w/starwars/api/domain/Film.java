@@ -1,7 +1,10 @@
 package br.com.b2w.starwars.api.domain;
 
+import lombok.ToString;
+
 import java.util.Date;
 
+@ToString
 public class Film {
 	
 	private final String title;
@@ -23,6 +26,14 @@ public class Film {
 	}
 	
 	public static Film of(String title, String director, String producer, Date releaseDate, String url) {
+		if (title == null) {
+			throw new NullPointerException("Movie Title can not be null");
+		}
+
+		if (url == null) {
+			throw new NullPointerException("Movie url can not be null");
+		}
+
 		return new Film(title, director, producer, releaseDate, url);
 	}
 
