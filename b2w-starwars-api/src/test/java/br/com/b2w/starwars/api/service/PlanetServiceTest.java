@@ -29,7 +29,7 @@ public class PlanetServiceTest {
     @Autowired
     public void setPlanetServiceTest(PlanetRepository planetRepo) {
         this.planetRepo = planetRepo;
-        planetService = new PlanetService(planetRepo);
+        this.planetService = new PlanetService(planetRepo);
     }
 
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");

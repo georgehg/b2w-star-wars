@@ -2,8 +2,8 @@ package br.com.b2w.starwars.api.controller;
 
 import java.net.URI;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import org.mapstruct.factory.Mappers;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.b2w.starwars.api.domain.Planet;
 import br.com.b2w.starwars.api.dto.PlanetDto;
 import br.com.b2w.starwars.api.dto.PlanetMapper;
 import br.com.b2w.starwars.api.service.PlanetService;
@@ -24,46 +23,44 @@ import br.com.b2w.starwars.api.service.PlanetService;
 @RequestMapping("/planets")
 public class PlanetController {
 	
-	private PlanetMapper mapper = Mappers.getMapper(PlanetMapper.class);
+	private final PlanetMapper mapper;
 	
 	private final PlanetService planetService;
-	
-	public PlanetController(PlanetService planetService) {
+
+	public PlanetController(PlanetMapper mapper, PlanetService planetService) {
+		this.mapper = mapper;
 		this.planetService = planetService;
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PlanetDto> newPlanet(@RequestBody(required = true) PlanetDto planet) {
-		planet = mapper.planetToPlanetDto(
-					planetService.newPlanet(
-							mapper.planetDtoToPlanet(planet)));
+	public ResponseEntity<PlanetDto> createPlanet(@RequestBody(required = true) PlanetDto planet) {
+		PlanetDto newPlanet = mapper.planetToDto(
+								planetService.newPlanet(
+									mapper.dtoToPlanet(planet)));
 		
 		return ResponseEntity.created(URI.create("localhost:8080/planets/" + String.valueOf(planet.getId())))
-              			.body(planet);
+              			.body(newPlanet);
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<Planet>> getPlanets(@PathVariable String planetId) {
-		return ResponseEntity.ok(planetService.getPlanetsList());
+	public ResponseEntity<List<PlanetDto>> getPlanets() {
+		return ResponseEntity.ok(planetService.getPlanetsList().stream()
+												.map(mapper::planetToDto)
+												.collect(Collectors.toList()));
 	}
 	
 	@GetMapping(value = "/{planetId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Planet> getPlanetById(@PathVariable String planetId) {
+	public ResponseEntity<PlanetDto> getPlanetById(@PathVariable String planetId) {
 		if (planetService.notExists(planetId)) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(planetService.getPlanet(planetId));
+		return ResponseEntity.ok(mapper.planetToDto(planetService.getPlanet(planetId)));
 	}
 	
 	@GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Planet> searchPlanet(@RequestParam(value = "name", required=true) String name) {
-		Planet planet = planetService.searchPlanet(name);
-		if (planet == null) {
-			return ResponseEntity.notFound().build();
-		}
-			
-		return ResponseEntity.ok(planet);
+	public ResponseEntity<PlanetDto> searchPlanet(@RequestParam(value = "name", required=true) String name) {
+		return ResponseEntity.ok(mapper.planetToDto(planetService.searchPlanet(name)));
 	}
 	
 	@DeleteMapping(value = "/{planetId}")

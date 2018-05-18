@@ -1,0 +1,257 @@
+= Star Wars RESTful API Guide
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 4
+:sectlinks:
+
+
+
+[[overview]]
+= Overview
+
+
+
+[[overview-http-verbs]]
+== HTTP verbs
+
+Star Wars RESTful API tries to adhere as closely as possible to standard HTTP and REST conventions in its 
+use of HTTP verbs.
+
+|===
+| Verb | Usage
+
+| `GET`
+| Used to retrieve a resource or a list of resources
+| `POST`
+| Used to create a new resource
+| `PUT`
+| Used to update a resource, both full and partial updates
+| `DELETE`
+| Used to delete an existing resource
+|===
+
+
+
+[[overview-http-status-codes]]
+== HTTP status codes
+
+Star Wars RESTful API tries to adhere as closely as possible to standard HTTP and REST conventions in its
+use of HTTP status codes.
+
+|===
+| Status code | Usage
+
+| `200 OK`
+| The request completed successfully
+
+| `201 CREATED`
+| The request completed successfully and a new resource was created
+
+| `301 Moved Permanently`
+| This and all future requests should be directed to the given URI
+
+| `400 Bad Request`
+| The request was malformed. The response body will include an error providing further information
+
+| `401 Unauthorized`
+| Access to the requested resource was unauthorized, i.e. the user was not authenticated
+
+| `403 Forbidden`
+| Access to the requested resource was forbidden, i.e. the user did not have the required role(s)
+
+| `404 Not Found`
+| The requested resource did not exist
+
+| `405 Method Not Allowed`
+| The request method is not supported for the requested resource
+
+| `409 Conflict`
+| The request could not be processed because of conflict in the request. Another resource already exists with same values
+
+| `412 Precondition Failed (RFC 7232)`
+| The server does not meet one of the preconditions that the requester put on the request
+
+| `500 Internal Server Error`
+| A generic error message, given when an unexpected condition was encountered and no more specific message is suitable
+
+| `501 Not Implemented`
+| The server either does not recognize the request method, or it lacks the ability to fulfil the request. 
+
+| `503 Service Unavailable`
+| Some underlying service required for completing the request was unavailable
+
+| `504 Gateway Time-out`
+| The backend service did not receive a timely response from the upstream server
+|===
+
+
+[[overview-errors]]
+== Errors
+
+Whenever an error response (status code >= 400) is returned, the body will contain a JSON object
+that describes the problem. The error object has the following structure:
+
+include::{snippets}/error-example/sites/response-fields.adoc[]
+
+For example, a request that attempts to query using an invalid GTIN will produce a
+`400 Bad Request` response:
+
+include::{snippets}/error-example/sites/http-response.adoc[]
+
+
+
+[[resources]]
+= Resources
+
+
+[[resources-api]]
+== Endpoints
+
+The Endpoints provides the entry point into the service.
+
+[[resources-api-access]]
+=== Accessing the Endpoints links
+
+A `GET` request is used to access the Endpoints links
+
+==== Example request
+
+include::{snippets}/v1/api-controller-test/get-controller-links/curl-request.adoc[]
+
+==== Response fields
+
+include::{snippets}/v1/api-controller-test/get-controller-links/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/v1/api-controller-test/get-controller-links/http-response.adoc[]
+
+
+[[resources-planets]]
+== Planets
+
+The Planets resource is used to create, modify and list registered Planets.
+
+
+
+[[resources-planets-list]]
+=== List registered Planets
+
+A `GET` request is used to list all registered Planets.
+
+==== Path parameters
+
+include::{snippets}/v1/planet-controller-test/get-planets-list/path-parameters.adoc[]
+
+==== Example request
+
+include::{snippets}/v1/planet-controller-test/get-planets-list/curl-request.adoc[]
+
+==== Response fields
+
+include::{snippets}/v1/planet-controller-test/get-planets-list/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/v1/planet-controller-test/get-planets-list/http-response.adoc[]
+
+
+
+[[resources-planets-get]]
+===  Get identified Planet
+
+A `GET` request is used to show a Planet identified by given ID
+
+==== Path parameters
+
+include::{snippets}/v1/planet-controller-test/get-planet-by-id/path-parameters.adoc[]
+
+==== Example request
+
+include::{snippets}/v1/planet-controller-test/get-planet-by-id/curl-request.adoc[]
+
+==== Response Fields
+
+include::{snippets}/v1/planet-controller-test/get-planet-by-id/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/v1/planet-controller-test/get-planet-by-id/http-response.adoc[]
+
+
+
+[[resources-planets-search-name]]
+===  Search Planet by Name
+
+A `GET` request is used to search and show a Planet by given Name
+
+==== Request parameter
+
+include::{snippets}/v1/planet-controller-test/search-planet-by-name/request-parameters.adoc[]
+
+==== Example request
+
+include::{snippets}/v1/planet-controller-test/search-planet-by-name/curl-request.adoc[]
+
+==== Response Fields
+
+include::{snippets}/v1/planet-controller-test/search-planet-by-name/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/v1/planet-controller-test/search-planet-by-name/http-response.adoc[]
+
+
+
+[[resources-planets-create]]
+===  Create Planet
+
+A `POST` request is used to create a new Planet
+
+==== Request fields
+
+include::{snippets}/v1/planet-controller-test/create-planet/request-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/v1/planet-controller-test/create-planet/curl-request.adoc[]
+
+==== Response Fields
+
+include::{snippets}/v1/planet-controller-test/create-planet/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/v1/planet-controller-test/create-planet/http-response.adoc[]
+
+
+
+[[resources-planets-update]]
+===  Update Planet
+
+A `PUT` request is used to update a given Planet. It´s only possible to update the Planet Name and Volume values.
+
+==== Path parameters
+
+include::{snippets}/v1/planet-controller-test/update-planet/path-parameters.adoc[]
+
+==== Request fields
+
+include::{snippets}/v1/planet-controller-test/update-planet/request-fields.adoc[]
+
+==== Example request
+
+include::{snippets}/v1/planet-controller-test/update-planet/curl-request.adoc[]
+
+==== Response Fields
+
+include::{snippets}/v1/planet-controller-test/update-planet/response-fields.adoc[]
+
+==== Example response
+
+include::{snippets}/v1/planet-controller-test/update-planet/http-response.adoc[]
+
+
+

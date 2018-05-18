@@ -27,27 +27,31 @@ public class Planet {
 	}
 	
 	public static Planet of(String name, Climate climate, Terrain terrain) {
-		if (name == null) {
-			throw new NullPointerException("Name can note be null");
-		}
-		
-		if (climate == null) {
-			throw new NullPointerException("Climate can note be null");
-		}
-		
-		if (terrain == null) {
-			throw new NullPointerException("Terrain can note be null");
-		}
-		
 		return Planet.of(name, climate, terrain, null);
 	}
 	
 	public static Planet of(String name, Climate climate, Terrain terrain, Set<Film> films) {
+		if (name == null) {
+			throw new NullPointerException("Name can note be null");
+		}
+
+		if (climate == null) {
+			throw new NullPointerException("Climate can note be null");
+		}
+
+		if (terrain == null) {
+			throw new NullPointerException("Terrain can note be null");
+		}
+
 		return new Planet(name, climate, terrain, films);
 	}
 
 	public String getId() {
 		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
