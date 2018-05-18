@@ -2,9 +2,10 @@ package br.com.b2w.starwars.api.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import br.com.b2w.starwars.api.domain.Planet;
 import br.com.b2w.starwars.api.repository.PlanetRepository;
-import org.springframework.stereotype.Service;
 
 @Service
 public class PlanetService {

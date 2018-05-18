@@ -19,6 +19,12 @@ public class Terrain {
 		return new Terrain();
 	}
 	
+	public static Terrain init(Set<String> vegetations) {
+		Terrain terrain = new Terrain();
+		terrain.addAllVegetation(vegetations);
+		return terrain;
+	}
+	
 	public Set<String> getVegetations() {
 		return Collections.unmodifiableSet(vegetations);
 	}
@@ -31,8 +37,8 @@ public class Terrain {
 		return this;
 	}
 	
-	public Boolean addAllVegetation(Set<String> vegetation) {
-		return this.vegetations.addAll(vegetation);
+	public Boolean addAllVegetation(Set<String> vegetations) {
+		return this.vegetations.addAll(vegetations);
 	}
 	
 	public void clearVegetation() {

@@ -1,7 +1,5 @@
 package br.com.b2w.starwars.api.controller;
 
-import static org.mockito.Matchers.anyObject;
-import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
@@ -11,11 +9,13 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.pr
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -31,9 +31,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import br.com.b2w.starwars.api.domain.Climate;
-import br.com.b2w.starwars.api.domain.Planet;
-import br.com.b2w.starwars.api.domain.Terrain;
+import br.com.b2w.starwars.api.dto.PlanetDto;
 import br.com.b2w.starwars.api.service.PlanetService;
 
 @RunWith(SpringRunner.class)
@@ -51,7 +49,7 @@ public class PlanetControllerTest {
     private WebApplicationContext context;
 	
 	@Autowired
-	//private JacksonTester<Planet> json;
+	private JacksonTester<PlanetDto> json;
 	
 	@MockBean
 	private PlanetService planetService;
@@ -79,15 +77,13 @@ public class PlanetControllerTest {
 	@Test
 	public void shouldCreateNewPlanet() throws IOException, Exception {
 		//Arrange
-		Planet planet = Planet.of("Alderaan",
-								Climate.init().addTemperature("temperate"),
-								Terrain.init().addVegetation("grasslands"));
+		PlanetDto planetDto = new PlanetDto("Alderaan", Sets.newSet("temperate"), Sets.newSet("grasslands"));
 		
-		when(this.planetService.newPlanet(anyObject())).thenReturn(planet);
+		//when(this.planetService.newPlanet(anyObject())).thenReturn(planetDto);
 		
 		//Act
-		//System.out.println(json.write(planet).getJson());
-		//ResultActions result = mvc.perform(post("/planets").contentType(contentType).content(json.write(planet).getJson()));
+		System.out.println(json.write(planetDto).getJson());
+		ResultActions result = mvc.perform(post("/planets").contentType(contentType).content(json.write(planetDto).getJson()));
 		
 		
 	}

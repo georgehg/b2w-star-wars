@@ -19,6 +19,12 @@ public class Climate {
 		return new Climate();
 	}
 	
+	public static Climate init(Set<String> temperatures) {
+		Climate climate = new Climate();
+		climate.addAllTemperature(temperatures);
+		return climate;
+	}
+	
 	public Set<String> getTemperatures() {
 		return Collections.unmodifiableSet(temperatures);
 	}
@@ -31,8 +37,8 @@ public class Climate {
 		return this;
 	}
 	
-	public Boolean addAllTemperature(Set<String> temperature) {
-		return this.temperatures.addAll(temperature);
+	public Boolean addAllTemperature(Set<String> temperatures) {
+		return this.temperatures.addAll(temperatures);
 	}
 	
 	public void clearTemperature() {
