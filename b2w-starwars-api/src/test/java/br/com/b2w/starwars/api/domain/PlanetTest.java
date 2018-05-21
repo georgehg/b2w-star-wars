@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.b2w.starwars.api.repository.PlanetRepository;
@@ -51,6 +52,21 @@ public class PlanetTest {
 		assertThat(newPlanet.getClimate().getTemperatures()).contains("arid");
 		assertThat(newPlanet.getTerrain().getVegetations()).contains("desert");
 		assertThat(newPlanet.getFilms()).contains(film1, film2);
+	}
+
+	@Test(expected = DuplicateKeyException.class)
+	public void shouldIssueErrorForNotUniqueName() throws ParseException {
+		planetRepo.save(Planet.of("Tatooine",
+									Climate.init().addTemperature("arid"),
+									Terrain.init().addVegetation("desert")));
+
+		planetRepo.save(Planet.of("Alderaan",
+									Climate.init().addTemperature("temperate"),
+									Terrain.init().addVegetation("grasslands")));
+
+		planetRepo.save(Planet.of("Tatooine",
+									Climate.init().addTemperature("arid"),
+									Terrain.init().addVegetation("desert")));
 	}
 	
 	@Test(expected = NullPointerException.class)

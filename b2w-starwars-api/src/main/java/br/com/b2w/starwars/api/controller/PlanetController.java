@@ -23,29 +23,26 @@ import br.com.b2w.starwars.api.service.PlanetService;
 @RequestMapping("/planets")
 public class PlanetController {
 	
-	private final PlanetMapper mapper;
-	
 	private final PlanetService planetService;
 
-	public PlanetController(PlanetMapper mapper, PlanetService planetService) {
-		this.mapper = mapper;
+	public PlanetController(PlanetService planetService) {
 		this.planetService = planetService;
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PlanetDto> createPlanet(@RequestBody(required = true) PlanetDto planet) {
-		PlanetDto newPlanet = mapper.planetToDto(
+		PlanetDto newPlanet = PlanetMapper.planetToDto(
 								planetService.newPlanet(
-									mapper.dtoToPlanet(planet)));
+										PlanetMapper.dtoToPlanet(planet)));
 		
-		return ResponseEntity.created(URI.create("localhost:8080/planets/" + String.valueOf(newPlanet.getId())))
+		return ResponseEntity.created(URI.create("localhost:8080/api/v1/planets/" + String.valueOf(newPlanet.getId())))
               			.body(newPlanet);
 	}
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<PlanetDto>> getPlanets() {
 		return ResponseEntity.ok(planetService.getPlanetsList().stream()
-												.map(mapper::planetToDto)
+												.map(PlanetMapper::planetToDto)
 												.collect(Collectors.toList()));
 	}
 	
@@ -55,12 +52,12 @@ public class PlanetController {
 			return ResponseEntity.notFound().build();
 		}
 		
-		return ResponseEntity.ok(mapper.planetToDto(planetService.getPlanet(planetId)));
+		return ResponseEntity.ok(PlanetMapper.planetToDto(planetService.getPlanet(planetId)));
 	}
 	
 	@GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<PlanetDto> searchPlanet(@RequestParam(value = "name", required=true) String name) {
-		return ResponseEntity.ok(mapper.planetToDto(planetService.searchPlanet(name)));
+		return ResponseEntity.ok(PlanetMapper.planetToDto(planetService.searchPlanet(name)));
 	}
 	
 	@DeleteMapping(value = "/{planetId}")

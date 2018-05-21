@@ -5,17 +5,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.domain.AbstractAggregateRoot;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.ToString;
 
 @ToString
 @Document
-public class Planet {
+public class Planet extends AbstractAggregateRoot {
 	
 	@Id
 	private String id;
-	
+
+	@Indexed(unique = true)
 	private final String name;
 
 	private final Climate climate;
@@ -51,12 +54,13 @@ public class Planet {
 		return new Planet(name, climate, terrain, films);
 	}
 
-	public String getId() {
-		return id;
+	public Planet complete() {
+		registerEvent(PlanetSavedEvent.of(this.name));
+		return this;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public String getId() {
+		return id;
 	}
 
 	public String getName() {

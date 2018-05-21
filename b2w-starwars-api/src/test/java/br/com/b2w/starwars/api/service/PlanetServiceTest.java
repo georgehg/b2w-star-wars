@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -19,7 +18,6 @@ import br.com.b2w.starwars.api.domain.Climate;
 import br.com.b2w.starwars.api.domain.Film;
 import br.com.b2w.starwars.api.domain.Planet;
 import br.com.b2w.starwars.api.domain.Terrain;
-import br.com.b2w.starwars.api.dto.PlanetMapper;
 import br.com.b2w.starwars.api.repository.PlanetRepository;
 
 @RunWith(SpringRunner.class)
@@ -33,13 +31,10 @@ public class PlanetServiceTest {
 
     private PlanetService planetService;
     
-    @MockBean
-    private SWApi swApi;
-    
     @Autowired
-    public void setPlanetServiceTest(PlanetRepository planetRepo, SWApi swApi, PlanetMapper mapper) {
+    public void setPlanetServiceTest(PlanetRepository planetRepo) {
         this.planetRepo = planetRepo;
-        this.planetService = new PlanetService(planetRepo, swApi, mapper);
+        this.planetService = new PlanetService(planetRepo);
     }
 
     private Planet getPlanet() throws ParseException {

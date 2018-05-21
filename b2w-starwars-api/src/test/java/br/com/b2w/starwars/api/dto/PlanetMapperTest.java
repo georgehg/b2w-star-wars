@@ -16,17 +16,16 @@ import br.com.b2w.starwars.api.domain.Terrain;
 public class PlanetMapperTest {
 	
 	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-	
-	private PlanetMapper mapper = new PlanetMapper();
-	
+
 	@Test
 	public void shouldConvertPlanetDtoToPlanet() {
 		PlanetDto planetDto = PlanetDto.of(null,
 										"Alderaan",
 										Sets.newSet("temperate"),
-										Sets.newSet("grasslands"));
+										Sets.newSet("grasslands"),
+										null);
 
-		Planet planet = mapper.dtoToPlanet(planetDto);
+		Planet planet = PlanetMapper.dtoToPlanet(planetDto);
 		assertThat(planet.getName()).isEqualTo("Alderaan");
 		assertThat(planet.getClimate().getTemperatures()).contains("temperate");
 		assertThat(planet.getTerrain().getVegetations()).contains("grasslands");
@@ -38,7 +37,7 @@ public class PlanetMapperTest {
 				Climate.init().addTemperature("arid"),
 				Terrain.init().addVegetation("desert"));
 
-		PlanetDto dto = mapper.planetToDto(planet);
+		PlanetDto dto = PlanetMapper.planetToDto(planet);
 		assertThat(dto.getName()).isEqualTo("Tatooine");
 		assertThat(dto.getClimate()).contains("arid");
 		assertThat(dto.getTerrain()).contains("desert");
@@ -58,7 +57,7 @@ public class PlanetMapperTest {
 				Terrain.init().addVegetation("desert"),
 				Sets.newSet(film));
 
-		PlanetDto dto = mapper.planetToDto(planet);
+		PlanetDto dto = PlanetMapper.planetToDto(planet);
 		assertThat(dto.getName()).isEqualTo("Tatooine");
 		assertThat(dto.getClimate()).contains("arid");
 		assertThat(dto.getTerrain()).contains("desert");
@@ -75,7 +74,7 @@ public class PlanetMapperTest {
                 formatter.parse("1977-05-25"),
                 "https://swapi.co/api/films/1/");
 		
-		Film film = mapper.dtoToFilm(dto);
+		Film film = PlanetMapper.dtoToFilm(dto);
 		assertThat(film.getTitle()).isEqualTo("A New Hope");
         assertThat(film.getDirector()).isEqualTo("George Lucas");
         assertThat(film.getProducer()).isEqualTo("Gary Kurtz, Rick McCallum");

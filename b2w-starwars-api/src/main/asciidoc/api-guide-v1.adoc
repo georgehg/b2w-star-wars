@@ -106,29 +106,6 @@ include::{snippets}/error-example/sites/http-response.adoc[]
 = Resources
 
 
-[[resources-api]]
-== Endpoints
-
-The Endpoints provides the entry point into the service.
-
-[[resources-api-access]]
-=== Accessing the Endpoints links
-
-A `GET` request is used to access the Endpoints links
-
-==== Example request
-
-include::{snippets}/v1/api-controller-test/get-controller-links/curl-request.adoc[]
-
-==== Response fields
-
-include::{snippets}/v1/api-controller-test/get-controller-links/response-fields.adoc[]
-
-==== Example response
-
-include::{snippets}/v1/api-controller-test/get-controller-links/http-response.adoc[]
-
-
 [[resources-planets]]
 == Planets
 

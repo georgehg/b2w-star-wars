@@ -4,25 +4,12 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.Matchers.anyObject;
 import static org.mockito.Mockito.when;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
-import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
-import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -38,10 +25,8 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -59,7 +44,6 @@ import br.com.b2w.starwars.api.service.PlanetService;
 @RunWith(SpringRunner.class)
 @WebMvcTest(PlanetController.class)
 @AutoConfigureJsonTesters
-@Import(ControllerConfig.class)
 public class PlanetControllerTest {
 	
 	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -121,54 +105,40 @@ public class PlanetControllerTest {
 	@Test
 	public void createPlanet() throws Exception {
 		//Arrange
-		PlanetDto inputDto = PlanetDto.of(null, "Alderaan", Sets.newSet("temperate"), Sets.newSet("grasslands"));
+		PlanetDto inputDto = PlanetDto.of(null, "Alderaan", Sets.newSet("temperate"), Sets.newSet("grasslands"), null);
 		Planet resultEntity = Planet.of("Alderaan", Climate.init(Sets.newSet("temperate")), Terrain.init(Sets.newSet("grasslands")));
-		resultEntity.setId("5afeee4f5cf07b3524b39aad");
 
 		when(this.planetService.newPlanet(anyObject())).thenReturn(resultEntity);
 
 		//Act
-		ResultActions result = this.mvc.perform(post("/api/v1/planets").contextPath("/api/v1")
-									.contentType(contentType)
-									.content(json.write(inputDto).getJson()));
+		ResultActions result =
+				this.mvc.perform(post("/api/v1/planets").contextPath("/api/v1")
+						.contentType(contentType)
+						.content(json.write(inputDto).getJson()));
 
 		//Assert
-		ResultActions assertResult = result.andExpect(status().isCreated())
+		result.andExpect(status().isCreated())
 				.andExpect(content().contentType(contentType))
-				.andExpect(jsonPath("id", is("5afeee4f5cf07b3524b39aad")))
+				.andExpect(header().string("Location", "localhost:8080/api/v1/planets/null"))
 				.andExpect(jsonPath("name", is("Alderaan")))
 				.andExpect(jsonPath("climate[0]", is("temperate")))
 				.andExpect(jsonPath("terrain[0]", is("grasslands")));
-
-		//Document
-		assertResult.andDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-							requestFields(
-								fieldWithPath("name").description("The Planet name"),
-								fieldWithPath("climate").description("The Planet climate list"),
-								fieldWithPath("terrain").description("The Planet terrain list")),
-							responseFields(
-								fieldWithPath("id").description("The Planet Identity"),
-								fieldWithPath("name").description("The Planet name"),
-								fieldWithPath("climate").description("The Planet climate list"),
-								fieldWithPath("terrain").description("The Planet terrain list"),
-								fieldWithPath("films").description("Planet appearances list in films"))));
 	}
 
 	@Test
-	public void getPlanetsList() throws IOException, Exception {
+	public void getPlanetsList() throws Exception {
 		//Arrange
 		Planet planet1 = Planet.of("Tatooine", Climate.init(Sets.newSet("arid")), Terrain.init(Sets.newSet("desert")), Sets.newSet(films.get(0), films.get(1)));
-		planet1.setId("5afeee4f5cf07b3524b39aad");
-		
 		Planet planet2 = Planet.of("Alderaan", Climate.init(Sets.newSet("temperate")), Terrain.init(Sets.newSet("grasslands")), Sets.newSet(films.get(2)));
-		planet2.setId("5affff4f5cf07b3524b39bbc");
-		
+
 		List<Planet> planetList = Arrays.asList(planet1, planet2);
 
 		when(this.planetService.getPlanetsList()).thenReturn(planetList);
 
 		//Act
-		ResultActions result = this.mvc.perform(get("/api/v1/planets").contextPath("/api/v1").contentType(contentType));
+		ResultActions result =
+				this.mvc.perform(get("/api/v1/planets").contextPath("/api/v1")
+						.contentType(contentType));
 
 		//Assert
 		result.andExpect(status().isOk())
@@ -182,34 +152,19 @@ public class PlanetControllerTest {
 				.andExpect(jsonPath("[1].terrain[0]", is("grasslands")))
 				.andExpect(jsonPath("[0].films[*]", hasSize(2)))
 				.andExpect(jsonPath("[0].films[0].title", is("Return of the Jedi")));
-
-		//Document
-		result.andDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-							responseFields(
-								fieldWithPath("[]").type(JsonFieldType.ARRAY).description("List of all registered Planets"),
-								fieldWithPath("[].id").description("The Planet Identity"),
-								fieldWithPath("[].name").description("The Planet name"),
-								fieldWithPath("[].climate").description("The Planet climate list"),
-								fieldWithPath("[].terrain").description("The Planet terrain list"),
-								fieldWithPath("[].films").description("Planet appearances list in films"),
-								fieldWithPath("[].films[].title").description("Film title"),
-								fieldWithPath("[].films[].director").description("Film director(s)"),
-								fieldWithPath("[].films[].producer").description("Film producer(s)"),
-								fieldWithPath("[].films[].release_date").description("Film release date"),
-								fieldWithPath("[].films[].url").description("Film url on SW APi"))));
 	}
 
 	@Test
-	public void getPlanetById() throws IOException, Exception {
+	public void getPlanetById() throws Exception {
 		//Arrange
 		String planetId = "5afeee4f5cf07b3524b39ccf";
 		Planet resultEntity = Planet.of("Tatooine", Climate.init(Sets.newSet("arid")), Terrain.init(Sets.newSet("desert")), Sets.newSet(films.get(0), films.get(1)));
-		resultEntity.setId("5afeee4f5cf07b3524b39aad");
 		when(this.planetService.getPlanet(planetId)).thenReturn(resultEntity);
 
 		//Act
-		ResultActions result = this.mvc.perform(get("/api/v1/planets/{planetId}", planetId).contextPath("/api/v1")
-									.contentType(contentType));
+		ResultActions result =
+				this.mvc.perform(get("/api/v1/planets/{planetId}", planetId).contextPath("/api/v1")
+						.contentType(contentType));
 
 		//Assert
 		result.andExpect(status().isOk())
@@ -220,35 +175,19 @@ public class PlanetControllerTest {
 				.andExpect(jsonPath("films[*]", hasSize(2)))
 				.andExpect(jsonPath("films[0].title", is("Return of the Jedi")))
 				.andExpect(jsonPath("films[1].title", is("A New Hope")));
-
-		//Document
-		result.andDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-						pathParameters(
-							parameterWithName("planetId").description("The Planet Identity")),
-						responseFields(
-							fieldWithPath("id").description("The Planet Identity"),
-							fieldWithPath("name").description("The Planet name"),
-							fieldWithPath("climate").description("The Planet climate list"),
-							fieldWithPath("terrain").description("The Planet terrain list"),
-							fieldWithPath("films").description("Planet appearances list in films"),
-							fieldWithPath("films[].title").description("Film title"),
-							fieldWithPath("films[].director").description("Film director(s)"),
-							fieldWithPath("films[].producer").description("Film producer(s)"),
-							fieldWithPath("films[].release_date").description("Film release date"),
-							fieldWithPath("films[].url").description("Film url on SW APi"))));
 	}
 
 	@Test
-	public void searchPlanet() throws IOException, Exception {
+	public void searchPlanet() throws Exception {
 		//Arrange
 		String planetName = "Alderaan";
 		Planet resultEntity = Planet.of(planetName, Climate.init(Sets.newSet("temperate")), Terrain.init(Sets.newSet("grasslands")), Sets.newSet(films.get(2)));
-		resultEntity.setId("5afeee4f5cf07b3524b39aad");
 		when(this.planetService.searchPlanet(planetName)).thenReturn(resultEntity);
 
 		//Act
-		ResultActions result = this.mvc.perform(get("/api/v1/planets/search?name={name}", planetName).contextPath("/api/v1")
-									.contentType(contentType));
+		ResultActions result =
+				this.mvc.perform(get("/api/v1/planets/search?name={name}", planetName).contextPath("/api/v1")
+						.contentType(contentType));
 
 		//Assert
 		result.andExpect(status().isOk())
@@ -258,22 +197,6 @@ public class PlanetControllerTest {
 				.andExpect(jsonPath("terrain[0]", is("grasslands")))
 				.andExpect(jsonPath("films[*]", hasSize(1)))
 				.andExpect(jsonPath("films[0].title", is("Revenge of the Sith")));
-
-		//Document
-		result.andDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-						requestParameters(
-							parameterWithName("name").description("The Planet name")),
-						responseFields(
-							fieldWithPath("id").description("The Planet Identity"),
-							fieldWithPath("name").description("The Planet name"),
-							fieldWithPath("climate").description("The Planet climate list"),
-							fieldWithPath("terrain").description("The Planet terrain list"),
-							fieldWithPath("films").description("Planet appearances list in films"),
-							fieldWithPath("films[].title").description("Film title"),
-							fieldWithPath("films[].director").description("Film director(s)"),
-							fieldWithPath("films[].producer").description("Film producer(s)"),
-							fieldWithPath("films[].release_date").description("Film release date"),
-							fieldWithPath("films[].url").description("Film url on SW APi"))));
 	}
 
 	@Test
@@ -283,15 +206,11 @@ public class PlanetControllerTest {
 		//when(this.planetService.remove(planetId)).thenReturn(null);
 
 		//Act
-		ResultActions result = this.mvc.perform(delete("/api/v1/planets/{planetId}", planetId).contextPath("/api/v1"));
+		ResultActions result =
+				this.mvc.perform(delete("/api/v1/planets/{planetId}", planetId).contextPath("/api/v1"));
 
 		//Assert
 		result.andExpect(status().isNoContent());
-
-		//Document
-		result.andDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
-						pathParameters(
-							parameterWithName("planetId").description("The Planet Identity"))));
 	}
 
 }

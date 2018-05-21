@@ -19,15 +19,10 @@ public class ServiceConfig {
 	public RestTemplateBuilder restTemplateBuilder() {
 		return new RestTemplateBuilder();
 	}
-	
+
 	@Bean
-	public SWApi swApi(RestTemplate restTemplate, ObjectMapper objectMapper) {
-		return new SWApi(restTemplate, objectMapper);
-	}
-	
-	@Bean
-	public PlanetMapper mapper() {
-		return new PlanetMapper();
+	public SWApi swApi(RestTemplate restTemplate) {
+		return new SWApi(restTemplate, new ObjectMapper());
 	}
 
 }
