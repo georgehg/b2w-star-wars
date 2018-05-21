@@ -38,7 +38,7 @@ public class PlanetController {
 								planetService.newPlanet(
 									mapper.dtoToPlanet(planet)));
 		
-		return ResponseEntity.created(URI.create("localhost:8080/planets/" + String.valueOf(planet.getId())))
+		return ResponseEntity.created(URI.create("localhost:8080/planets/" + String.valueOf(newPlanet.getId())))
               			.body(newPlanet);
 	}
 	

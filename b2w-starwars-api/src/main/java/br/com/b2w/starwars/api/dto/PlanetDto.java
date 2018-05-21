@@ -26,6 +26,10 @@ public class PlanetDto {
 	protected PlanetDto() {
 		this(null, null, null, null, null);
 	}
+	
+	public static PlanetDto of(String id, String name, Set<String> climate, Set<String> terrain) {
+		return PlanetDto.of(id, name, climate, terrain, null);
+	}
 
 	public static PlanetDto of(String id, String name, Set<String> climate, Set<String> terrain, Set<FilmDto> films) {
 		if (name == null) {

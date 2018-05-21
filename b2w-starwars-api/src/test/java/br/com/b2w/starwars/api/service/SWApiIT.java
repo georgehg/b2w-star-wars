@@ -6,10 +6,12 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 
 import br.com.b2w.starwars.api.AbstractIntegrationTest;
 import br.com.b2w.starwars.api.dto.FilmDto;
 
+@Import(ServiceConfig.class)
 public class SWApiIT extends AbstractIntegrationTest {
 	
 	@Autowired

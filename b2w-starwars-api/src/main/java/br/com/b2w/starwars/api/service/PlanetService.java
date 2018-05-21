@@ -1,13 +1,16 @@
 package br.com.b2w.starwars.api.service;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import br.com.b2w.starwars.api.domain.Film;
 import br.com.b2w.starwars.api.domain.Planet;
 import br.com.b2w.starwars.api.dto.FilmDto;
 import br.com.b2w.starwars.api.dto.PlanetMapper;
@@ -52,18 +55,23 @@ public class PlanetService {
 		planetRepo.delete(planetId);		
 	}
 	
-	@Async
+	//@Async
+	//@EventListener
 	public void updatePlanetFilmsList(Planet planet) {
-		swApi.getFilmsListforPlanet(planet.getName())
-			.parallelStream()
-			.map(url -> CompletableFuture.supplyAsync(getFilmSuplier(url)))
-			.collect(Collectors.toList())
-			.stream()
-			.map(mapper::dtoToFilm)
-			.collect(Collectors.toSet());
+		Set<Film> films = swApi.getFilmsListforPlanet(planet.getName())
+								.stream()
+								.map(url -> CompletableFuture.supplyAsync(getFilmSuplier(url)))
+								.collect(Collectors.toList())
+								.stream()
+								.map(CompletableFuture::join)
+								.map(mapper::dtoToFilm)
+								.collect(Collectors.toSet());
+		
+		planet.addFilms(films);
+		planetRepo.save(planet);		
 	}
 	
-	public Supplier<FilmDto> getFilmSuplier(String url) {
+	private Supplier<FilmDto> getFilmSuplier(String url) {
 		return () -> swApi.getFilm(url);
 	}
 

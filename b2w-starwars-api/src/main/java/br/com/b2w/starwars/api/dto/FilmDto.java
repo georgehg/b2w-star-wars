@@ -17,7 +17,7 @@ public class FilmDto {
 	private final String producer;
 	
 	@JsonProperty("release_date")
-	//@JsonFormat
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private final Date releaseDate;
 	
 	private final String url;	

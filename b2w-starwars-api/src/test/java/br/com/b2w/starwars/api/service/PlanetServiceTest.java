@@ -12,17 +12,22 @@ import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.b2w.starwars.api.domain.Climate;
 import br.com.b2w.starwars.api.domain.Film;
 import br.com.b2w.starwars.api.domain.Planet;
 import br.com.b2w.starwars.api.domain.Terrain;
+import br.com.b2w.starwars.api.dto.PlanetMapper;
 import br.com.b2w.starwars.api.repository.PlanetRepository;
 
 @RunWith(SpringRunner.class)
 @DataMongoTest
+@Import(ServiceConfig.class)
 public class PlanetServiceTest {
+	
+	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     private PlanetRepository planetRepo;
 
@@ -32,12 +37,10 @@ public class PlanetServiceTest {
     private SWApi swApi;
     
     @Autowired
-    public void setPlanetServiceTest(PlanetRepository planetRepo, SWApi swApi) {
+    public void setPlanetServiceTest(PlanetRepository planetRepo, SWApi swApi, PlanetMapper mapper) {
         this.planetRepo = planetRepo;
-        this.planetService = new PlanetService(planetRepo, swApi);
+        this.planetService = new PlanetService(planetRepo, swApi, mapper);
     }
-
-    private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
     private Planet getPlanet() throws ParseException {
         Film film1 = Film.of("A New Hope",
@@ -69,8 +72,6 @@ public class PlanetServiceTest {
     public void shouldCreateNewPlanet() throws Exception {
         Planet planet = getPlanet();
         planetService.newPlanet(planet);
-
-        System.out.println(planet);
         assertThat(planet.getId()).isNotNull();
     }
 
