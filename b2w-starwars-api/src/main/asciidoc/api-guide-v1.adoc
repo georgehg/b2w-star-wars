@@ -132,7 +132,7 @@ include::{snippets}/v1/api-controller-test/get-controller-links/http-response.ad
 [[resources-planets]]
 == Planets
 
-The Planets resource is used to create, modify and list registered Planets.
+The Planets resource is used to create and list registered Planets.
 
 
 
@@ -140,10 +140,6 @@ The Planets resource is used to create, modify and list registered Planets.
 === List registered Planets
 
 A `GET` request is used to list all registered Planets.
-
-==== Path parameters
-
-include::{snippets}/v1/planet-controller-test/get-planets-list/path-parameters.adoc[]
 
 ==== Example request
 
@@ -189,19 +185,19 @@ A `GET` request is used to search and show a Planet by given Name
 
 ==== Request parameter
 
-include::{snippets}/v1/planet-controller-test/search-planet-by-name/request-parameters.adoc[]
+include::{snippets}/v1/planet-controller-test/search-planet/request-parameters.adoc[]
 
 ==== Example request
 
-include::{snippets}/v1/planet-controller-test/search-planet-by-name/curl-request.adoc[]
+include::{snippets}/v1/planet-controller-test/search-planet/curl-request.adoc[]
 
 ==== Response Fields
 
-include::{snippets}/v1/planet-controller-test/search-planet-by-name/response-fields.adoc[]
+include::{snippets}/v1/planet-controller-test/search-planet/response-fields.adoc[]
 
 ==== Example response
 
-include::{snippets}/v1/planet-controller-test/search-planet-by-name/http-response.adoc[]
+include::{snippets}/v1/planet-controller-test/search-planet/http-response.adoc[]
 
 
 
@@ -228,30 +224,21 @@ include::{snippets}/v1/planet-controller-test/create-planet/http-response.adoc[]
 
 
 
-[[resources-planets-update]]
-===  Update Planet
+[[resources-planets-remove]]
+===  Remove one Planet
 
-A `PUT` request is used to update a given Planet. It´s only possible to update the Planet Name and Volume values.
+A `DELETE` request is used to remove one Planet identified by given ID
 
 ==== Path parameters
 
-include::{snippets}/v1/planet-controller-test/update-planet/path-parameters.adoc[]
-
-==== Request fields
-
-include::{snippets}/v1/planet-controller-test/update-planet/request-fields.adoc[]
+include::{snippets}/v1/planet-controller-test/delete-planet/path-parameters.adoc[]
 
 ==== Example request
 
-include::{snippets}/v1/planet-controller-test/update-planet/curl-request.adoc[]
-
-==== Response Fields
-
-include::{snippets}/v1/planet-controller-test/update-planet/response-fields.adoc[]
+include::{snippets}/v1/planet-controller-test/delete-planet/curl-request.adoc[]
 
 ==== Example response
 
-include::{snippets}/v1/planet-controller-test/update-planet/http-response.adoc[]
-
+include::{snippets}/v1/planet-controller-test/delete-planet/http-response.adoc[]
 
 

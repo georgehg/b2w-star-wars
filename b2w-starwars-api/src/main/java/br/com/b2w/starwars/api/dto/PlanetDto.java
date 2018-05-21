@@ -20,12 +20,14 @@ public class PlanetDto {
 	private final Set<String> climate;
 	
 	private final Set<String> terrain;
+	
+	private final Set<FilmDto> films;
 
 	protected PlanetDto() {
-		this(null, null, null, null);
+		this(null, null, null, null, null);
 	}
 
-	public static PlanetDto of(String id, String name, Set<String> climate, Set<String> terrain) {
+	public static PlanetDto of(String id, String name, Set<String> climate, Set<String> terrain, Set<FilmDto> films) {
 		if (name == null) {
 			throw new NullPointerException("Name can note be null");
 		}
@@ -38,7 +40,7 @@ public class PlanetDto {
 			throw new NullPointerException("Terrain can note be empty");
 		}
 
-		return new PlanetDto(id, name, climate, terrain);
+		return new PlanetDto(id, name, climate, terrain, films);
 	}
 
 }

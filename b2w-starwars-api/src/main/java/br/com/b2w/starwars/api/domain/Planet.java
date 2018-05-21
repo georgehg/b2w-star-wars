@@ -1,9 +1,12 @@
 package br.com.b2w.starwars.api.domain;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
-import lombok.ToString;
 import org.springframework.data.annotation.Id;
+
+import lombok.ToString;
 
 @ToString
 public class Planet {
@@ -27,7 +30,7 @@ public class Planet {
 	}
 	
 	public static Planet of(String name, Climate climate, Terrain terrain) {
-		return Planet.of(name, climate, terrain, null);
+		return Planet.of(name, climate, terrain, new HashSet<>());
 	}
 	
 	public static Planet of(String name, Climate climate, Terrain terrain, Set<Film> films) {
@@ -65,9 +68,13 @@ public class Planet {
 	public Terrain getTerrain() {
 		return terrain;
 	}
+	
+	public void addFilms(Set<Film> films) {
+		this.films.addAll(films);
+	}
 
 	public Set<Film> getFilms() {
-		return films;
+		return Collections.unmodifiableSet(films);
 	}
 	
 }

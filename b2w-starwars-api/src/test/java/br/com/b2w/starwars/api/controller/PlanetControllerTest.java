@@ -2,8 +2,8 @@ package br.com.b2w.starwars.api.controller;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.Mockito.*;
 import static org.mockito.Matchers.anyObject;
+import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
@@ -27,23 +27,19 @@ import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
-import br.com.b2w.starwars.api.domain.Climate;
-import br.com.b2w.starwars.api.domain.Planet;
-import br.com.b2w.starwars.api.domain.Terrain;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.JUnitRestDocumentation;
-import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -52,13 +48,16 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import br.com.b2w.starwars.api.domain.Climate;
+import br.com.b2w.starwars.api.domain.Planet;
+import br.com.b2w.starwars.api.domain.Terrain;
 import br.com.b2w.starwars.api.dto.PlanetDto;
 import br.com.b2w.starwars.api.service.PlanetService;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(PlanetController.class)
 @AutoConfigureJsonTesters
-@ImportAutoConfiguration(ControllerConfig.class)
+@Import(ControllerConfig.class)
 public class PlanetControllerTest {
 
 	@Rule

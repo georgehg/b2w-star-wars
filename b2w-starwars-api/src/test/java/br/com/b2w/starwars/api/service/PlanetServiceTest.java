@@ -1,22 +1,24 @@
 package br.com.b2w.starwars.api.service;
 
-import br.com.b2w.starwars.api.domain.Climate;
-import br.com.b2w.starwars.api.domain.Film;
-import br.com.b2w.starwars.api.domain.Planet;
-import br.com.b2w.starwars.api.domain.Terrain;
-import br.com.b2w.starwars.api.repository.PlanetRepository;
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.internal.util.collections.Sets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
-import static org.assertj.core.api.Assertions.assertThat;
+import br.com.b2w.starwars.api.domain.Climate;
+import br.com.b2w.starwars.api.domain.Film;
+import br.com.b2w.starwars.api.domain.Planet;
+import br.com.b2w.starwars.api.domain.Terrain;
+import br.com.b2w.starwars.api.repository.PlanetRepository;
 
 @RunWith(SpringRunner.class)
 @DataMongoTest
@@ -25,11 +27,14 @@ public class PlanetServiceTest {
     private PlanetRepository planetRepo;
 
     private PlanetService planetService;
-
+    
+    @MockBean
+    private SWApi swApi;
+    
     @Autowired
-    public void setPlanetServiceTest(PlanetRepository planetRepo) {
+    public void setPlanetServiceTest(PlanetRepository planetRepo, SWApi swApi) {
         this.planetRepo = planetRepo;
-        this.planetService = new PlanetService(planetRepo);
+        this.planetService = new PlanetService(planetRepo, swApi);
     }
 
     private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
