@@ -21,6 +21,7 @@ Funcionalidades desejadas:
 - Buscar por nome
 - Buscar por ID
 - Remover planeta
+
 Linguagens que usamos: Java, Go, Clojure, Node, Python
 Bancos que usamos: MongoDB, Cassandra, DynamoDB, Datomic
 
