@@ -124,6 +124,23 @@ public class PlanetControllerTest {
 				.andExpect(jsonPath("climate[0]", is("temperate")))
 				.andExpect(jsonPath("terrain[0]", is("grasslands")));
 	}
+	
+	@Test
+	public void createPlanetWithNullName() throws Exception {
+		//Arrange
+		PlanetDto inputDto = PlanetDto.of(null, null, Sets.newSet("temperate"), Sets.newSet("grasslands"), null);
+		
+		//Act
+		ResultActions result =
+				this.mvc.perform(post("/api/v1/planets").contextPath("/api/v1")
+						.contentType(contentType)
+						.content(json.write(inputDto).getJson()));
+
+		//Assert
+		result.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("code", is("BAD_REQUEST")));
+	}
 
 	@Test
 	public void getPlanetsList() throws Exception {
@@ -203,7 +220,6 @@ public class PlanetControllerTest {
 	public void deletePlanet() throws Exception {
 		//Arrange
 		String planetId = "5afeee4f5cf07b3524b39ccf";
-		//when(this.planetService.remove(planetId)).thenReturn(null);
 
 		//Act
 		ResultActions result =

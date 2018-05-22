@@ -2,6 +2,8 @@ package br.com.b2w.starwars.api.domain;
 
 import lombok.ToString;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,9 +32,7 @@ public class Terrain {
 	}
 	
 	public Terrain addVegetation(String vegetation) {
-		if (vegetation == null) {
-			throw new NullPointerException("Vegetation can not be null");
-		}
+		checkNotNull(vegetation, "Vegetation can not be null");
 		this.vegetations.add(vegetation);
 		return this;
 	}

@@ -1,19 +1,20 @@
 package br.com.b2w.starwars.api.service;
 
+import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.event.TransactionalEventListener;
+
 import br.com.b2w.starwars.api.domain.Film;
 import br.com.b2w.starwars.api.domain.Planet;
 import br.com.b2w.starwars.api.domain.PlanetSavedEvent;
 import br.com.b2w.starwars.api.dto.FilmDto;
 import br.com.b2w.starwars.api.dto.PlanetMapper;
 import br.com.b2w.starwars.api.repository.PlanetRepository;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.event.TransactionalEventListener;
-
-import java.util.Set;
-import java.util.concurrent.CompletableFuture;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
 
 @Service
 public class PlanetSavedProcessor {
@@ -39,7 +40,7 @@ public class PlanetSavedProcessor {
                 .map(PlanetMapper::dtoToFilm)
                 .collect(Collectors.toSet());
 
-        Planet planet = planetRepo.findByName(event.getName());
+        Planet planet = planetRepo.findByName(event.getName()).get();
         planet.addFilms(films);
         planetRepo.save(planet);
     }

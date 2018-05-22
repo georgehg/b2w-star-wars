@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.b2w.starwars.api.dto.PlanetDto;
 import br.com.b2w.starwars.api.dto.PlanetMapper;
+import br.com.b2w.starwars.api.exceptions.PlanetNotFoundException;
+import br.com.b2w.starwars.api.exceptions.PlanetValidationException;
 import br.com.b2w.starwars.api.service.PlanetService;
 
 @RestController
@@ -30,7 +32,8 @@ public class PlanetController {
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PlanetDto> createPlanet(@RequestBody(required = true) PlanetDto planet) {
+	public ResponseEntity<PlanetDto> createPlanet(@RequestBody(required = true) PlanetDto planet)
+			throws PlanetValidationException {
 		PlanetDto newPlanet = PlanetMapper.planetToDto(
 								planetService.newPlanet(
 										PlanetMapper.dtoToPlanet(planet)));
@@ -47,25 +50,18 @@ public class PlanetController {
 	}
 	
 	@GetMapping(value = "/{planetId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PlanetDto> getPlanetById(@PathVariable String planetId) {
-		if (planetService.notExists(planetId)) {
-			return ResponseEntity.notFound().build();
-		}
-		
+	public ResponseEntity<PlanetDto> getPlanetById(@PathVariable String planetId) throws PlanetNotFoundException {
 		return ResponseEntity.ok(PlanetMapper.planetToDto(planetService.getPlanet(planetId)));
 	}
 	
 	@GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<PlanetDto> searchPlanet(@RequestParam(value = "name", required=true) String name) {
+	public ResponseEntity<PlanetDto> searchPlanet(@RequestParam(value = "name", required=true) String name)
+			throws PlanetNotFoundException {
 		return ResponseEntity.ok(PlanetMapper.planetToDto(planetService.searchPlanet(name)));
 	}
 	
 	@DeleteMapping(value = "/{planetId}")
-	public ResponseEntity<?> deletePlanet(@PathVariable String planetId) {
-		if (planetService.notExists(planetId)) {
-			return ResponseEntity.notFound().build();
-		}
-		
+	public ResponseEntity<?> deletePlanet(@PathVariable String planetId) throws PlanetNotFoundException {
 		planetService.remove(planetId);
 		return ResponseEntity.noContent().build();
 	}

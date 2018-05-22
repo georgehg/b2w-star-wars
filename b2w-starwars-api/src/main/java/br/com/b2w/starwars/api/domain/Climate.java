@@ -2,6 +2,8 @@ package br.com.b2w.starwars.api.domain;
 
 import lombok.ToString;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,9 +32,7 @@ public class Climate {
 	}
 	
 	public Climate addTemperature(String temperature) {
-		if (temperature == null) {
-			throw new NullPointerException("Temperature can not be null");
-		}
+		checkNotNull(temperature, "Temperature can not be null");
 		this.temperatures.add(temperature);
 		return this;
 	}

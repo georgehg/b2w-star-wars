@@ -1,5 +1,8 @@
 package br.com.b2w.starwars.api.domain;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -9,6 +12,7 @@ import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import br.com.b2w.starwars.api.exceptions.PlanetValidationException;
 import lombok.ToString;
 
 @ToString
@@ -34,23 +38,22 @@ public class Planet extends AbstractAggregateRoot {
 		this.films = films;
 	}
 	
-	public static Planet of(String name, Climate climate, Terrain terrain) {
+	public static Planet of(String name, Climate climate, Terrain terrain) throws PlanetValidationException {
 		return Planet.of(name, climate, terrain, new HashSet<>());
 	}
 	
-	public static Planet of(String name, Climate climate, Terrain terrain, Set<Film> films) {
-		if (name == null) {
-			throw new NullPointerException("Name can note be null");
+	public static Planet of(String name, Climate climate, Terrain terrain, Set<Film> films) throws PlanetValidationException {
+		try {
+			checkNotNull(name, "Field name can not be null");
+			checkArgument(!name.isEmpty(), "Field name can not be empty");
+			checkNotNull(climate, "Field climate can not be null");
+			checkArgument(!climate.getTemperatures().isEmpty(), "Field climate can not be empty");
+			checkNotNull(terrain, "Field terrain can not be null");
+			checkArgument(!terrain.getVegetations().isEmpty(), "Field terrain can not be empty");
+		} catch (Exception e) {
+			throw new PlanetValidationException(e.getMessage());
 		}
-
-		if (climate == null) {
-			throw new NullPointerException("Climate can note be null");
-		}
-
-		if (terrain == null) {
-			throw new NullPointerException("Terrain can note be null");
-		}
-
+		
 		return new Planet(name, climate, terrain, films);
 	}
 

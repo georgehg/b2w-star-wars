@@ -1,6 +1,7 @@
 package br.com.b2w.starwars.api.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -18,6 +19,8 @@ import br.com.b2w.starwars.api.domain.Climate;
 import br.com.b2w.starwars.api.domain.Film;
 import br.com.b2w.starwars.api.domain.Planet;
 import br.com.b2w.starwars.api.domain.Terrain;
+import br.com.b2w.starwars.api.exceptions.PlanetNotFoundException;
+import br.com.b2w.starwars.api.exceptions.PlanetValidationException;
 import br.com.b2w.starwars.api.repository.PlanetRepository;
 
 @RunWith(SpringRunner.class)
@@ -37,7 +40,7 @@ public class PlanetServiceTest {
         this.planetService = new PlanetService(planetRepo);
     }
 
-    private Planet getPlanet() throws ParseException {
+    private Planet getPlanet() throws ParseException, PlanetValidationException {
         Film film1 = Film.of("A New Hope",
                 "George Lucas",
                 "Gary Kurtz, Rick McCallum",
@@ -85,7 +88,7 @@ public class PlanetServiceTest {
     }
 
     @Test
-    public void shouldReturnOnePlanetById() throws Exception {
+    public void shouldReturnPlanetById() throws Exception {
         Planet newPlanet = getPlanet();
         String planetId = planetService.newPlanet(newPlanet).getId();
 
@@ -96,7 +99,7 @@ public class PlanetServiceTest {
     @Test
     public void shouldFindPlanetByName() throws Exception {
         Planet newPlanet = getPlanet();
-        String planetName = planetService.newPlanet(newPlanet).getName();
+        String planetName = planetRepo.save(newPlanet).getName();
 
         Planet planet = planetService.searchPlanet(planetName);
         assertThat(planet).isNotNull();
@@ -105,11 +108,27 @@ public class PlanetServiceTest {
     @Test
     public void shouldRemoveOnePlanet() throws Exception {
         Planet newPlanet = getPlanet();
-        String planetId = planetService.newPlanet(newPlanet).getId();
+        String planetId = planetRepo.save(newPlanet).getId();
 
         planetService.remove(planetId);
 
-        Planet planet = planetService.getPlanet(planetId);
-        assertThat(planet).isNull();
+        assertThatThrownBy(() -> planetService.getPlanet(planetId))
+		.isInstanceOf(PlanetNotFoundException.class)
+		.hasMessageContaining("Planet do not exists with ID:");
+    }
+    
+    @Test
+    public void shouldIssueErrorForNotExistantId() throws Exception {
+        assertThatThrownBy(() -> planetService.getPlanet("9999999999"))
+		.isInstanceOf(PlanetNotFoundException.class)
+		.hasMessageContaining("Planet do not exists with ID:");
+    }
+    
+    
+    @Test
+    public void shouldIssueErrorForNameNotFound() throws Exception {
+        assertThatThrownBy(() -> planetService.searchPlanet("Terra"))
+		.isInstanceOf(PlanetNotFoundException.class)
+		.hasMessageContaining("Planet not found with name:");
     }
 }

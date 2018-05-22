@@ -1,8 +1,33 @@
 package br.com.b2w.starwars.api.controller;
 
-import br.com.b2w.starwars.api.domain.Film;
-import br.com.b2w.starwars.api.dto.PlanetDto;
-import br.com.b2w.starwars.api.repository.PlanetRepository;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.delete;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessRequest;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.preprocessResponse;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.payload.PayloadDocumentation.responseFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.requestParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -23,23 +48,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
-import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.Matchers.greaterThan;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
-import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
-import static org.springframework.restdocs.headers.HeaderDocumentation.responseHeaders;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
-import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
-import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import br.com.b2w.starwars.api.domain.Film;
+import br.com.b2w.starwars.api.dto.PlanetDto;
+import br.com.b2w.starwars.api.repository.PlanetRepository;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT )
@@ -138,6 +149,30 @@ public class PlanetControllerIntegrationTest {
 							fieldWithPath("climate").description("The Planet climate list"),
 							fieldWithPath("terrain").description("The Planet terrain list"),
 							fieldWithPath("films").description("Planet appearances list in films"))));
+	}
+	
+	@Test
+	public void badRequestError() throws Exception {
+		//Arrange
+		PlanetDto inputDto = PlanetDto.of(null, null, Sets.newSet("temperate"), Sets.newSet("grasslands"), null);
+		
+		//Act
+		ResultActions result =
+				this.mvc.perform(post("/api/v1/planets").contextPath("/api/v1")
+						.contentType(contentType)
+						.content(json.write(inputDto).getJson()));
+
+		//Assert
+		result.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("code", is("BAD_REQUEST")));
+		
+		//Document
+		result.andDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
+						responseFields(
+							fieldWithPath("code").description("Status Code name"),
+							fieldWithPath("cause").description("Exception name"),
+							fieldWithPath("message").description("Exeption message"))));
 	}
 
 	@Test

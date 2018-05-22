@@ -6,6 +6,7 @@ import br.com.b2w.starwars.api.domain.Climate;
 import br.com.b2w.starwars.api.domain.Film;
 import br.com.b2w.starwars.api.domain.Planet;
 import br.com.b2w.starwars.api.domain.Terrain;
+import br.com.b2w.starwars.api.exceptions.PlanetValidationException;
 
 public class PlanetMapper {
 
@@ -25,7 +26,7 @@ public class PlanetMapper {
 							film.getUrl());
 	}
 
-	public static Planet dtoToPlanet(PlanetDto dto) {
+	public static Planet dtoToPlanet(PlanetDto dto) throws PlanetValidationException {
 		return Planet.of(dto.getName(),
 						 Climate.init(dto.getClimate()),
 						 Terrain.init(dto.getTerrain()));

@@ -2,6 +2,8 @@ package br.com.b2w.starwars.api.domain;
 
 import lombok.*;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Date;
 
 @Getter
@@ -21,14 +23,8 @@ public class Film {
 	private final String url;
 	
 	public static Film of(String title, String director, String producer, Date releaseDate, String url) {
-		if (title == null) {
-			throw new NullPointerException("Movie Title can not be null");
-		}
-
-		if (url == null) {
-			throw new NullPointerException("Movie url can not be null");
-		}
-
+		checkNotNull(title, "Film title name can not be null");
+		checkNotNull(url, "Field url can not be null");
 		return new Film(title, director, producer, releaseDate, url);
 	}
 	

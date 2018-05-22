@@ -93,12 +93,18 @@ use of HTTP status codes.
 Whenever an error response (status code >= 400) is returned, the body will contain a JSON object
 that describes the problem. The error object has the following structure:
 
-include::{snippets}/error-example/sites/response-fields.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/bad-request-error/response-fields.adoc[]
 
-For example, a request that attempts to query using an invalid GTIN will produce a
+For example, a request that attempts to create new planet using an invalid JSON will produce a
 `400 Bad Request` response:
 
-include::{snippets}/error-example/sites/http-response.adoc[]
+==== Example request
+
+include::{snippets}/v1/planet-controller-integration-test/bad-request-error/curl-request.adoc[]
+
+==== Example response
+
+include::{snippets}/v1/planet-controller-integration-test/bad-request-error/http-response.adoc[]
 
 
 
@@ -120,15 +126,15 @@ A `GET` request is used to list all registered Planets.
 
 ==== Example request
 
-include::{snippets}/v1/planet-controller-test/get-planets-list/curl-request.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/get-planets-list/curl-request.adoc[]
 
 ==== Response fields
 
-include::{snippets}/v1/planet-controller-test/get-planets-list/response-fields.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/get-planets-list/response-fields.adoc[]
 
 ==== Example response
 
-include::{snippets}/v1/planet-controller-test/get-planets-list/http-response.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/get-planets-list/http-response.adoc[]
 
 
 
@@ -139,19 +145,19 @@ A `GET` request is used to show a Planet identified by given ID
 
 ==== Path parameters
 
-include::{snippets}/v1/planet-controller-test/get-planet-by-id/path-parameters.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/get-planet-by-id/path-parameters.adoc[]
 
 ==== Example request
 
-include::{snippets}/v1/planet-controller-test/get-planet-by-id/curl-request.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/get-planet-by-id/curl-request.adoc[]
 
 ==== Response Fields
 
-include::{snippets}/v1/planet-controller-test/get-planet-by-id/response-fields.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/get-planet-by-id/response-fields.adoc[]
 
 ==== Example response
 
-include::{snippets}/v1/planet-controller-test/get-planet-by-id/http-response.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/get-planet-by-id/http-response.adoc[]
 
 
 
@@ -162,19 +168,19 @@ A `GET` request is used to search and show a Planet by given Name
 
 ==== Request parameter
 
-include::{snippets}/v1/planet-controller-test/search-planet/request-parameters.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/search-planet/request-parameters.adoc[]
 
 ==== Example request
 
-include::{snippets}/v1/planet-controller-test/search-planet/curl-request.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/search-planet/curl-request.adoc[]
 
 ==== Response Fields
 
-include::{snippets}/v1/planet-controller-test/search-planet/response-fields.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/search-planet/response-fields.adoc[]
 
 ==== Example response
 
-include::{snippets}/v1/planet-controller-test/search-planet/http-response.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/search-planet/http-response.adoc[]
 
 
 
@@ -185,19 +191,19 @@ A `POST` request is used to create a new Planet
 
 ==== Request fields
 
-include::{snippets}/v1/planet-controller-test/create-planet/request-fields.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/create-planet/request-fields.adoc[]
 
 ==== Example request
 
-include::{snippets}/v1/planet-controller-test/create-planet/curl-request.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/create-planet/curl-request.adoc[]
 
 ==== Response Fields
 
-include::{snippets}/v1/planet-controller-test/create-planet/response-fields.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/create-planet/response-fields.adoc[]
 
 ==== Example response
 
-include::{snippets}/v1/planet-controller-test/create-planet/http-response.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/create-planet/http-response.adoc[]
 
 
 
@@ -208,14 +214,14 @@ A `DELETE` request is used to remove one Planet identified by given ID
 
 ==== Path parameters
 
-include::{snippets}/v1/planet-controller-test/delete-planet/path-parameters.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/delete-planet/path-parameters.adoc[]
 
 ==== Example request
 
-include::{snippets}/v1/planet-controller-test/delete-planet/curl-request.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/delete-planet/curl-request.adoc[]
 
 ==== Example response
 
-include::{snippets}/v1/planet-controller-test/delete-planet/http-response.adoc[]
+include::{snippets}/v1/planet-controller-integration-test/delete-planet/http-response.adoc[]
 
 

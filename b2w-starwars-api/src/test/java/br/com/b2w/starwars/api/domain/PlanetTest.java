@@ -1,6 +1,7 @@
 package br.com.b2w.starwars.api.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import br.com.b2w.starwars.api.exceptions.PlanetValidationException;
 import br.com.b2w.starwars.api.repository.PlanetRepository;
 
 @RunWith(SpringRunner.class)
@@ -25,7 +27,7 @@ public class PlanetTest {
 	private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	
 	@Test
-	public void shouldCreateNewPlanet() throws ParseException {
+	public void shouldCreateNewPlanet() throws ParseException, PlanetValidationException {
 		
 		Film film1 = Film.of("A New Hope",
 							"George Lucas",
@@ -55,7 +57,7 @@ public class PlanetTest {
 	}
 
 	@Test(expected = DuplicateKeyException.class)
-	public void shouldIssueErrorForNotUniqueName() throws ParseException {
+	public void shouldIssueErrorForNotUniqueName() throws ParseException, PlanetValidationException {
 		planetRepo.save(Planet.of("Tatooine",
 									Climate.init().addTemperature("arid"),
 									Terrain.init().addVegetation("desert")));
@@ -69,20 +71,52 @@ public class PlanetTest {
 									Terrain.init().addVegetation("desert")));
 	}
 	
-	@Test(expected = NullPointerException.class)
+	@Test
 	public void shouldIssueErrorForPlanetNullName() throws ParseException {
-		Planet.of(null, Climate.init(), Terrain.init());
+		assertThatThrownBy(() ->
+				Planet.of(null, Climate.init().addTemperature("temperate"), Terrain.init().addVegetation("grasslands")))
+		.isInstanceOf(PlanetValidationException.class)
+		.hasMessage("Field name can not be null");
 	}
 	
-	@Test(expected = NullPointerException.class)
+	@Test
+	public void shouldIssueErrorForPlanetEmptyName() throws ParseException {
+		assertThatThrownBy(() ->
+				Planet.of("", Climate.init().addTemperature("temperate"), Terrain.init().addVegetation("grasslands")))
+		.isInstanceOf(PlanetValidationException.class)
+		.hasMessage("Field name can not be empty");
+	}
+	
+	@Test
 	public void shouldIssueErrorForPlanetNullClimate() throws ParseException {
-		Planet.of("Tatooine", null, Terrain.init());
+		assertThatThrownBy(() ->
+				Planet.of("Tatooine", null, Terrain.init().addVegetation("desert")))
+		.isInstanceOf(PlanetValidationException.class)
+		.hasMessage("Field climate can not be null");
 	}
 	
-	@Test(expected = NullPointerException.class)
-	public void shouldIssueErrorForPlanetNullTerrain() throws ParseException {
-		Planet.of("Tatooine", Climate.init(), null);
+	@Test
+	public void shouldIssueErrorForPlanetEmptyClimate() throws ParseException {
+		assertThatThrownBy(() ->
+				Planet.of("Tatooine", Climate.init(), Terrain.init().addVegetation("desert")))
+		.isInstanceOf(PlanetValidationException.class)
+		.hasMessage("Field climate can not be empty");
 	}
-		
-
+	
+	@Test
+	public void shouldIssueErrorForPlanetNullTerrain() throws ParseException {
+		assertThatThrownBy(() ->
+				Planet.of("Tatooine", Climate.init().addTemperature("arid"), null))
+		.isInstanceOf(PlanetValidationException.class)
+		.hasMessage("Field terrain can not be null");
+	}
+	
+	@Test
+	public void shouldIssueErrorForPlanetEmptyTerrain() throws ParseException {
+		assertThatThrownBy(() ->
+				Planet.of("Tatooine", Climate.init().addTemperature("arid"), Terrain.init()))
+		.isInstanceOf(PlanetValidationException.class)
+		.hasMessage("Field terrain can not be empty");
+	}
+	
 }

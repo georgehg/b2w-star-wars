@@ -27,7 +27,7 @@ public class FilmTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldIssueErrorForPlanetNullClimate() throws ParseException {
+    public void shouldIssueErrorForFilmNullTitle() throws ParseException {
         Film.of(null,
                 "George Lucas",
                 "Gary Kurtz, Rick McCallum",
@@ -36,7 +36,7 @@ public class FilmTest {
     }
 
     @Test(expected = NullPointerException.class)
-    public void shouldIssueErrorForPlanetNullTerrain() throws ParseException {
+    public void shouldIssueErrorForfilmNullUrl() throws ParseException {
         Film.of("A New Hope",
                 "George Lucas",
                 "Gary Kurtz, Rick McCallum",
