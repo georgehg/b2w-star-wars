@@ -2,7 +2,6 @@ package br.com.b2w.starwars.api.dto;
 
 import java.util.Date;
 
-import br.com.b2w.starwars.api.domain.Film;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 

@@ -6,7 +6,6 @@ public class PlanetNotFoundException extends Exception {
 
 	public PlanetNotFoundException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
 
 }

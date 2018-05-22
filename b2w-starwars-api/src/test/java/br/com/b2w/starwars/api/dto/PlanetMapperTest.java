@@ -85,7 +85,7 @@ public class PlanetMapperTest {
 	}
 	
 	@Test
-	public void shouldIsseuErrorDtoToPlanetNullName() {
+	public void shouldIssueErrorDtoToPlanetNullName() {
 		PlanetDto planetDto = PlanetDto.of(null,
 										null,
 										Sets.newSet("temperate"),
@@ -98,7 +98,7 @@ public class PlanetMapperTest {
 	}
 	
 	@Test
-	public void shouldIsseuErrorDtoToPlanetEmptyName() {
+	public void shouldIssueErrorDtoToPlanetEmptyName() {
 		PlanetDto planetDto = PlanetDto.of(null,
 										"",
 										Sets.newSet("temperate"),
