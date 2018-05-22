@@ -110,4 +110,30 @@ public class PlanetMapperTest {
 		.hasMessage("Field name can not be empty");
 	}
 
+	@Test
+	public void shouldIssueErrorDtoToPlanetNullClimate() {
+		PlanetDto planetDto = PlanetDto.of(null,
+				"Alderaan",
+				null,
+				Sets.newSet("grasslands"),
+				null);
+
+		assertThatThrownBy(() -> PlanetMapper.dtoToPlanet(planetDto))
+				.isInstanceOf(PlanetValidationException.class)
+				.hasMessage("Field climate can not be empty");
+	}
+
+	@Test
+	public void shouldIssueErrorDtoToPlanetNullTerrain() {
+		PlanetDto planetDto = PlanetDto.of(null,
+				"Alderaan",
+				Sets.newSet("temperate"),
+				null,
+				null);
+
+		assertThatThrownBy(() -> PlanetMapper.dtoToPlanet(planetDto))
+				.isInstanceOf(PlanetValidationException.class)
+				.hasMessage("Field terrain can not be empty");
+	}
+
 }

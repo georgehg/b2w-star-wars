@@ -6,6 +6,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @ToString
@@ -38,6 +39,7 @@ public class Terrain {
 	}
 	
 	public Boolean addAllVegetation(Set<String> vegetations) {
+		if(Objects.isNull(vegetations)) return false;
 		return this.vegetations.addAll(vegetations);
 	}
 	

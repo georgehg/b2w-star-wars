@@ -728,17 +728,17 @@ Content-Length: 152
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet name</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].climate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet climate list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet climate list</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].terrain</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet terrain list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet terrain list</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].films</code></p></td>
@@ -770,6 +770,11 @@ Content-Length: 152
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Film url on SW APi</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].appearance_count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet appearances count</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -779,7 +784,7 @@ Content-Length: 152
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1631
+Content-Length: 1685
 
 [ {
   "name" : "Tatooine",
@@ -815,7 +820,8 @@ Content-Length: 1631
     "producer" : "Rick McCallum",
     "url" : "https://swapi.co/api/films/6/",
     "release_date" : "2005-05-19"
-  } ]
+  } ],
+  "appearance_count" : 5
 }, {
   "name" : "Alderaan",
   "climate" : [ "temperate" ],
@@ -832,7 +838,8 @@ Content-Length: 1631
     "producer" : "Rick McCallum",
     "url" : "https://swapi.co/api/films/6/",
     "release_date" : "2005-05-19"
-  } ]
+  } ],
+  "appearance_count" : 2
 } ]</code></pre>
 </div>
 </div>
@@ -860,7 +867,7 @@ Content-Length: 1631
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>planetId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet Identity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet Identity</p></td>
 </tr>
 </tbody>
 </table>
@@ -869,7 +876,7 @@ Content-Length: 1631
 <h4 id="_example_request_3"><a class="link" href="#_example_request_3">Example request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/api/v1/planets/5b038ca35119013ee0d79949' -i -H 'Content-Type: application/json;charset=UTF-8'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/api/v1/planets/5b041a935cf07bf96828f032' -i -H 'Content-Type: application/json;charset=UTF-8'</code></pre>
 </div>
 </div>
 </div>
@@ -892,17 +899,17 @@ Content-Length: 1631
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet name</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>climate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet climate list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet climate list</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>terrain</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet terrain list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet terrain list</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>films</code></p></td>
@@ -934,6 +941,11 @@ Content-Length: 1631
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Film url on SW APi</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>appearance_count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet appearances count</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -943,7 +955,7 @@ Content-Length: 1631
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 1121
+Content-Length: 1148
 
 {
   "name" : "Tatooine",
@@ -979,7 +991,8 @@ Content-Length: 1121
     "producer" : "Rick McCallum",
     "url" : "https://swapi.co/api/films/6/",
     "release_date" : "2005-05-19"
-  } ]
+  } ],
+  "appearance_count" : 5
 }</code></pre>
 </div>
 </div>
@@ -1006,7 +1019,7 @@ Content-Length: 1121
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet name</p></td>
 </tr>
 </tbody>
 </table>
@@ -1038,17 +1051,17 @@ Content-Length: 1121
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet name</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>climate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet climate list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet climate list</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>terrain</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet terrain list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet terrain list</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>films</code></p></td>
@@ -1080,6 +1093,11 @@ Content-Length: 1121
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Film url on SW APi</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>appearance_count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet appearances count</p></td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -1089,7 +1107,7 @@ Content-Length: 1121
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 504
+Content-Length: 531
 
 {
   "name" : "Alderaan",
@@ -1107,7 +1125,8 @@ Content-Length: 504
     "producer" : "Rick McCallum",
     "url" : "https://swapi.co/api/films/6/",
     "release_date" : "2005-05-19"
-  } ]
+  } ],
+  "appearance_count" : 2
 }</code></pre>
 </div>
 </div>
@@ -1137,17 +1156,17 @@ Content-Length: 504
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet name</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>climate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet climate list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet climate list</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>terrain</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet terrain list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet terrain list</p></td>
 </tr>
 </tbody>
 </table>
@@ -1183,22 +1202,27 @@ Content-Length: 504
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet name</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet name</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>climate</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet climate list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet climate list</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>terrain</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet terrain list</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet terrain list</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>films</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Array</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Planet appearances list in films</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>appearance_count</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet appearances count</p></td>
 </tr>
 </tbody>
 </table>
@@ -1208,15 +1232,16 @@ Content-Length: 504
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 201 Created
-Location: localhost:8080/api/v1/planets/5b038cad5119013ee0d7994a
+Location: localhost:8080/api/v1/planets/5b041a9d5cf07bf96828f033
 Content-Type: application/json;charset=UTF-8
-Content-Length: 110
+Content-Length: 137
 
 {
   "name" : "Alderaan",
   "climate" : [ "temperate" ],
   "terrain" : [ "grasslands" ],
-  "films" : [ ]
+  "films" : [ ],
+  "appearance_count" : 0
 }</code></pre>
 </div>
 </div>
@@ -1244,7 +1269,7 @@ Content-Length: 110
 <tbody>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>planetId</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The Planet Identity</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Planet Identity</p></td>
 </tr>
 </tbody>
 </table>
@@ -1253,7 +1278,7 @@ Content-Length: 110
 <h4 id="_example_request_6"><a class="link" href="#_example_request_6">Example request</a></h4>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/api/v1/planets/5b038c8f5119013ee0d79946' -i -X DELETE</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">$ curl 'http://localhost:8080/api/v1/planets/5b041a7f5cf07bf96828f02f' -i -X DELETE</code></pre>
 </div>
 </div>
 </div>
@@ -1271,7 +1296,7 @@ Content-Length: 110
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2018-05-21 23:31:46 BRT
+Last updated 2018-05-22 09:40:37 BRT
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">

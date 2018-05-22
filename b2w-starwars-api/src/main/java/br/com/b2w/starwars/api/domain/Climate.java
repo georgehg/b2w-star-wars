@@ -6,6 +6,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @ToString
@@ -38,6 +39,7 @@ public class Climate {
 	}
 	
 	public Boolean addAllTemperature(Set<String> temperatures) {
+		if(Objects.isNull(temperatures)) return false;
 		return this.temperatures.addAll(temperatures);
 	}
 	

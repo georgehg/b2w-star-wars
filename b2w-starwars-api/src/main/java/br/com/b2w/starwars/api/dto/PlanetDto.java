@@ -1,11 +1,13 @@
 package br.com.b2w.starwars.api.dto;
 
+import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,6 +35,11 @@ public class PlanetDto {
 
 	public static PlanetDto of(String id, String name, Set<String> climate, Set<String> terrain, Set<FilmDto> films) {
 		return new PlanetDto(id, name, climate, terrain, films);
+	}
+
+	@JsonProperty("appearance_count")
+	public Integer getAppearanceCount() {
+		return Objects.isNull(films) ? null : films.size();
 	}
 
 }

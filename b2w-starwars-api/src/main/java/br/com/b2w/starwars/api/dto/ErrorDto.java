@@ -19,7 +19,7 @@ public class ErrorDto {
 		this.message = message;
 	}
     
-    public ErrorDto() {
+    protected ErrorDto() {
     	this(null, null, null);
     }
 	

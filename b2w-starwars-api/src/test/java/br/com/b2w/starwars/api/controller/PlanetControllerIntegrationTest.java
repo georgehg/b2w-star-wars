@@ -141,14 +141,15 @@ public class PlanetControllerIntegrationTest {
 						responseHeaders(
 							headerWithName("Location").description("URL for newly created Planet")),
 						requestFields(
-							fieldWithPath("name").description("The Planet name"),
-							fieldWithPath("climate").description("The Planet climate list"),
-							fieldWithPath("terrain").description("The Planet terrain list")),
+							fieldWithPath("name").description("Planet name"),
+							fieldWithPath("climate").description("Planet climate list"),
+							fieldWithPath("terrain").description("Planet terrain list")),
 						responseFields(
-							fieldWithPath("name").description("The Planet name"),
-							fieldWithPath("climate").description("The Planet climate list"),
-							fieldWithPath("terrain").description("The Planet terrain list"),
-							fieldWithPath("films").description("Planet appearances list in films"))));
+							fieldWithPath("name").description("Planet name"),
+							fieldWithPath("climate").description("Planet climate list"),
+							fieldWithPath("terrain").description("Planet terrain list"),
+							fieldWithPath("films").description("Planet appearances list in films"),
+							fieldWithPath("appearance_count").description("Planet appearances count"))));
 	}
 	
 	@Test
@@ -215,15 +216,16 @@ public class PlanetControllerIntegrationTest {
 		result.andDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
 						responseFields(
 							fieldWithPath("[]").type(JsonFieldType.ARRAY).description("List of all registered Planets"),
-							fieldWithPath("[].name").description("The Planet name"),
-							fieldWithPath("[].climate").description("The Planet climate list"),
-							fieldWithPath("[].terrain").description("The Planet terrain list"),
+							fieldWithPath("[].name").description("Planet name"),
+							fieldWithPath("[].climate").description("Planet climate list"),
+							fieldWithPath("[].terrain").description("Planet terrain list"),
 							fieldWithPath("[].films").description("Planet appearances list in films"),
 							fieldWithPath("[].films[].title").description("Film title"),
 							fieldWithPath("[].films[].director").description("Film director(s)"),
 							fieldWithPath("[].films[].producer").description("Film producer(s)"),
 							fieldWithPath("[].films[].release_date").description("Film release date"),
-							fieldWithPath("[].films[].url").description("Film url on SW APi"))));
+							fieldWithPath("[].films[].url").description("Film url on SW APi"),
+							fieldWithPath("[].appearance_count").description("Planet appearances count"))));
 }
 
 	@Test
@@ -256,17 +258,18 @@ public class PlanetControllerIntegrationTest {
 		//Document
 		result.andDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
 						pathParameters(
-							parameterWithName("planetId").description("The Planet Identity")),
+							parameterWithName("planetId").description("Planet Identity")),
 						responseFields(
-							fieldWithPath("name").description("The Planet name"),
-							fieldWithPath("climate").description("The Planet climate list"),
-							fieldWithPath("terrain").description("The Planet terrain list"),
+							fieldWithPath("name").description("Planet name"),
+							fieldWithPath("climate").description("Planet climate list"),
+							fieldWithPath("terrain").description("Planet terrain list"),
 							fieldWithPath("films").description("Planet appearances list in films"),
 							fieldWithPath("films[].title").description("Film title"),
 							fieldWithPath("films[].director").description("Film director(s)"),
 							fieldWithPath("films[].producer").description("Film producer(s)"),
 							fieldWithPath("films[].release_date").description("Film release date"),
-							fieldWithPath("films[].url").description("Film url on SW APi"))));
+							fieldWithPath("films[].url").description("Film url on SW APi"),
+							fieldWithPath("appearance_count").description("Planet appearances count"))));
 	}
 
 	@Test
@@ -303,17 +306,18 @@ public class PlanetControllerIntegrationTest {
 		//Document
 		result.andDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
 						requestParameters(
-							parameterWithName("name").description("The Planet name")),
+							parameterWithName("name").description("Planet name")),
 						responseFields(
-							fieldWithPath("name").description("The Planet name"),
-							fieldWithPath("climate").description("The Planet climate list"),
-							fieldWithPath("terrain").description("The Planet terrain list"),
+							fieldWithPath("name").description("Planet name"),
+							fieldWithPath("climate").description("Planet climate list"),
+							fieldWithPath("terrain").description("Planet terrain list"),
 							fieldWithPath("films").description("Planet appearances list in films"),
 							fieldWithPath("films[].title").description("Film title"),
 							fieldWithPath("films[].director").description("Film director(s)"),
 							fieldWithPath("films[].producer").description("Film producer(s)"),
 							fieldWithPath("films[].release_date").description("Film release date"),
-							fieldWithPath("films[].url").description("Film url on SW APi"))));
+							fieldWithPath("films[].url").description("Film url on SW APi"),
+							fieldWithPath("appearance_count").description("Planet appearances count"))));
 	}
 
 	@Test
@@ -339,7 +343,7 @@ public class PlanetControllerIntegrationTest {
 		//Document
 		result.andDo(document("{class-name}/{method-name}", preprocessRequest(prettyPrint()), preprocessResponse(prettyPrint()),
 						pathParameters(
-							parameterWithName("planetId").description("The Planet Identity"))));
+							parameterWithName("planetId").description("Planet Identity"))));
 	}
 
 }

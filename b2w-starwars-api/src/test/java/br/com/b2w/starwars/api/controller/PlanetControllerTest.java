@@ -122,7 +122,8 @@ public class PlanetControllerTest {
 				.andExpect(header().string("Location", "localhost:8080/api/v1/planets/null"))
 				.andExpect(jsonPath("name", is("Alderaan")))
 				.andExpect(jsonPath("climate[0]", is("temperate")))
-				.andExpect(jsonPath("terrain[0]", is("grasslands")));
+				.andExpect(jsonPath("terrain[0]", is("grasslands")))
+				.andExpect(jsonPath("appearance_count", is(0)));
 	}
 	
 	@Test
@@ -130,6 +131,40 @@ public class PlanetControllerTest {
 		//Arrange
 		PlanetDto inputDto = PlanetDto.of(null, null, Sets.newSet("temperate"), Sets.newSet("grasslands"), null);
 		
+		//Act
+		ResultActions result =
+				this.mvc.perform(post("/api/v1/planets").contextPath("/api/v1")
+						.contentType(contentType)
+						.content(json.write(inputDto).getJson()));
+
+		//Assert
+		result.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("code", is("BAD_REQUEST")));
+	}
+
+	@Test
+	public void createPlanetWithNullClimate() throws Exception {
+		//Arrange
+		PlanetDto inputDto = PlanetDto.of(null, "Alderaan", null, Sets.newSet("grasslands"), null);
+
+		//Act
+		ResultActions result =
+				this.mvc.perform(post("/api/v1/planets").contextPath("/api/v1")
+						.contentType(contentType)
+						.content(json.write(inputDto).getJson()));
+
+		//Assert
+		result.andExpect(status().isBadRequest())
+				.andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("code", is("BAD_REQUEST")));
+	}
+
+	@Test
+	public void createPlanetWithNullTerrain() throws Exception {
+		//Arrange
+		PlanetDto inputDto = PlanetDto.of(null, "Alderaan", Sets.newSet("temperate"), null, null);
+
 		//Act
 		ResultActions result =
 				this.mvc.perform(post("/api/v1/planets").contextPath("/api/v1")
@@ -189,6 +224,8 @@ public class PlanetControllerTest {
 				.andExpect(jsonPath("name", is("Tatooine")))
 				.andExpect(jsonPath("climate[0]", is("arid")))
 				.andExpect(jsonPath("terrain[0]", is("desert")))
+				.andExpect(jsonPath("appearance_count", is(2)))
+				.andExpect(jsonPath("appearance_count", is(2)))
 				.andExpect(jsonPath("films[*]", hasSize(2)))
 				.andExpect(jsonPath("films[0].title", is("Return of the Jedi")))
 				.andExpect(jsonPath("films[1].title", is("A New Hope")));
@@ -212,6 +249,7 @@ public class PlanetControllerTest {
 				.andExpect(jsonPath("name", is(planetName)))
 				.andExpect(jsonPath("climate[0]", is("temperate")))
 				.andExpect(jsonPath("terrain[0]", is("grasslands")))
+				.andExpect(jsonPath("appearance_count", is(1)))
 				.andExpect(jsonPath("films[*]", hasSize(1)))
 				.andExpect(jsonPath("films[0].title", is("Revenge of the Sith")));
 	}
